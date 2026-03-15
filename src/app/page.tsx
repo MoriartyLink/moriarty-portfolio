@@ -1,65 +1,154 @@
-import Image from "next/image";
+'use client'
+
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import ScreenWrapper from '@/components/ScreenWrapper'
+import CyberBackground from '@/components/CyberBackground'
+import HeroSection from '@/components/HeroSection'
+import BootSequence from '@/components/BootSequence'
+import BentoWindow from '@/components/BentoWindow'
+import WhoAmI from '@/components/WhoAmI'
+import Projects from '@/components/Projects'
+import Connect from '@/components/Connect'
+
+type SystemState = 'LOCKED' | 'BOOTING' | 'ACTIVE'
 
 export default function Home() {
+  const [systemStatus, setSystemStatus] = useState<SystemState>('LOCKED')
+
+  const bootMessages = [
+    'Initializing kernel...',
+    'Loading system drivers...',
+    'Mounting file systems...',
+    'Starting network services...',
+    'Loading user interface...',
+    'System ready.'
+  ]
+
+  useEffect(() => {
+    if (systemStatus === 'LOCKED') {
+      const timer = setTimeout(() => {
+        setSystemStatus('BOOTING')
+      }, 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [systemStatus])
+
+  const handleBootComplete = () => {
+    setSystemStatus('ACTIVE')
+  }
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  }
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen bg-deep-black text-violet-blue font-mono">
+      <CyberBackground />
+      <ScreenWrapper>
+        {/* Hero Section */}
+        <HeroSection />
+        
+        {/* Main Home Section */}
+        <div id="home-section" className="min-h-screen">
+          <AnimatePresence mode="wait">
+            {systemStatus === 'LOCKED' && (
+              <motion.div
+                key="locked"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black flex items-center justify-center z-50"
+              >
+                <div className="text-center">
+                  <div className="text-white text-2xl font-bold mb-4 neon-text">SYSTEM LOCKED</div>
+                  <div className="text-purple-400 text-sm">Initializing...</div>
+                </div>
+              </motion.div>
+            )}
+
+            {systemStatus === 'BOOTING' && (
+              <BootSequence key="booting" onBootComplete={handleBootComplete} />
+            )}
+
+            {systemStatus === 'ACTIVE' && (
+              <motion.div
+                key="active"
+                className="container mx-auto px-4 py-8 max-w-7xl"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <header className="text-center mb-12">
+                  <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                    className="inline-block"
+                  >
+                    <div className="text-white text-4xl font-bold mb-2 neon-text">
+                      TERMINAL INTERFACE
+                    </div>
+                    <div className="text-white text-sm">
+                      System Status: Online
+                    </div>
+                  </motion.div>
+                </header>
+
+                <main className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <motion.div variants={containerVariants}>
+                    <BentoWindow 
+                      title="whoami" 
+                      delay={0.5}
+                      className="h-full"
+                    >
+                      <WhoAmI />
+                    </BentoWindow>
+                  </motion.div>
+
+                  <motion.div variants={containerVariants}>
+                    <BentoWindow 
+                      title="projects.exe" 
+                      delay={0.7}
+                      className="h-full"
+                    >
+                      <Projects />
+                    </BentoWindow>
+                  </motion.div>
+
+                  <motion.div variants={containerVariants}>
+                    <BentoWindow 
+                      title="connect.sh" 
+                      delay={0.9}
+                      className="h-full"
+                    >
+                      <Connect />
+                    </BentoWindow>
+                  </motion.div>
+                </main>
+
+                <motion.footer 
+                  className="mt-12 text-center"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.1 }}
+                >
+                  <div className="text-white text-xs font-mono">
+                    <div>$ system_status --all</div>
+                    <div className="mt-1">All systems operational | User: moriarty | Session: Active</div>
+                  </div>
+                </motion.footer>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </ScreenWrapper>
     </div>
-  );
+  )
 }
