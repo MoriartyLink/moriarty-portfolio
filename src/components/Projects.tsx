@@ -14,12 +14,13 @@ interface Project {
 const Projects = () => {
   const projects: Project[] = [
     {
-      name: 'shop-finder-API.exe',
-      description: 'Geolocation-based services backbone handling spatial queries and complex database interactions',
-      tech: ['Node.js', 'PostgreSQL', 'Geospatial'],
+      name: 'talkware.community',
+      description: 'Project To Product Mandalay Developer Community',
+      tech: ['Node.js', 'TypeScript'],
       status: 'ACTIVE',
-      url: 'https://github.com/MoriartyLink/shop-finder-API'
+      url: 'https://github.com/PockraftStudio/talkware-landing'
     },
+    
     {
       name: 'Safe-Route-API.daemon',
       description: 'Security-first routing engine calculating paths based on safety metrics and environmental datasets',
@@ -35,12 +36,13 @@ const Projects = () => {
       url: 'https://github.com/MoriartyLink/my_AIPlayground'
     },
     {
-      name: 'pockraft.system',
-      description: 'Community-powered software studio infrastructure',
-      tech: ['Node.js', 'TypeScript', 'Community'],
+      name: 'shop-finder-API.exe',
+      description: 'Geolocation-based services backbone handling spatial queries and complex database interactions',
+      tech: ['Node.js', 'PostgreSQL', 'Geospatial'],
       status: 'ACTIVE',
-      url: 'https://github.com/MoriartyLink'
+      url: 'https://github.com/MoriartyLink/shop-finder-API'
     }
+    
   ]
 
   const getStatusColor = (status: Project['status']) => {
