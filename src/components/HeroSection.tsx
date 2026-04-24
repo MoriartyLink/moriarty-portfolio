@@ -27,7 +27,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, ease: 'easeOut', delay: 1.5 }}
           className="text-lg md:text-xl lg:text-2xl text-white/90 mb-4"
         >
-          System Architect & Community Builder
+          Software Developer & Community Builder
         </motion.p>
         <motion.p
           initial={{ opacity: 0, y: 20 }}

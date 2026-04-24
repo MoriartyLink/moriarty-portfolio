@@ -17,14 +17,14 @@ const WhoAmI = () => {
         />
         
         <TypewriterText 
-          text="System Architect & Community Builder"
+          text="Software Developer & Community Builder"
           className="text-white/80 text-sm mt-2 block"
           delay={1000}
         />
         
         <div className="mt-4 space-y-2">
           <TypewriterText 
-            text="• Currently studying at MIIT"
+            text="• Currently studying at MIIT (Final Year)"
             className="text-white/70 text-xs"
             delay={1500}
           />
@@ -34,7 +34,7 @@ const WhoAmI = () => {
             delay={2000}
           />
           <TypewriterText 
-            text="• Software Engineering Intern at FTLP Company"
+            text="• Junior Software Developer"
             className="text-white/70 text-xs"
             delay={2500}
           />
